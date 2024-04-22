@@ -1,11 +1,10 @@
 <div class="navbar-bg"></div>
 <nav class="navbar navbar-expand-lg main-navbar">
     <form class="form-inline mr-auto">
-        <ul class="navbar-nav mr-3">
-            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars mt-3"></i></a></li>
-            <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i
-                        class="fas fa-search"></i></a></li>
-        </ul>
+        <form action="{{ route('dashboard.product') }}" method="GET" class="form-inline mr-3">
+            <input type="text" name="search" class="form-control mr-sm-2" placeholder="Search products...">
+            <button type="submit" class="btn">Search</button>
+        </form>
     </form>
     <ul class="navbar-nav navbar-right">
         <li class="dropdown"><a href="#" data-toggle="dropdown"

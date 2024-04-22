@@ -3,7 +3,6 @@
 @section('content')
 <div class="p-2">
     <h4>Dashboard</h4>
-    <h6 class="font-weight-light">Dashboard / <span class="font-weight-bold"> user </span></h6>
 </div>
 <div class="row">
     <div class="col-12">
@@ -43,7 +42,7 @@
 
                             <td>
                                 <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#editProdukModal{{ $user->id }}">Edit User</button>
-                                <form method="POST">
+                                <form action="{{ route('dashboard.user.delete', $user->id)}}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-danger btn-sm font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Delete user">Delete</button>
                                 </form>
@@ -59,7 +58,7 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form method="POST"class="needs-validation" novalidate="">
+                                    <form method="POST" action=" {{ route('dashboard.user.update', $user->id)}}" class="needs-validation" novalidate="">
                                         @csrf
                                         <div class="modal-body">
                                             <div class="form-group">
@@ -129,4 +128,4 @@
 <script>
 
 </script>
-@endsection 
+@endsection
