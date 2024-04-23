@@ -33,7 +33,7 @@
                             <td>{{$history->customer->name}}</td>
                             <td>{{$history->user->name}}</td>
                             <td>
-                                <a href="{{ route('history.detail', $history->id) }}" class="btn btn-primary">Detail Pembelian</a>
+                                <a href="{{ route('history.details', $history->id) }}" class="btn btn-primary">Detail Pembelian</a>
                             </td>
                         </tr>
                         @endforeach

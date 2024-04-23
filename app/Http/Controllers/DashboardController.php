@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Sale;
 use App\Models\DetailSale;
 use Carbon\Carbon;
+
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -290,13 +291,35 @@ class DashboardController extends Controller
     }
 
     public function viewHistory() {
-        $historys = Sale::with(['customer', 'user'])->get();
+        if (Auth()->user()->role === 'admin') {
+            $historys = Sale::with(['user', 'customer'])->get();
+            return view('pages.sale.index', compact('historys'));
+        } else {
+        $userId = Auth()->user()->id;
+    
+        $historys = Sale::with(['customer', 'user'])
+                        ->where('user_id', $userId)
+                        ->get();
+    
         return view('pages.sale.index', compact('historys'));
+        }
+        
+    }
+
+    public function showDetails($id)
+    {
+        $history = Sale::findOrFail($id);
+        return view('pages.sale.detail', compact('history'));
     }
 
     public function showDetail($id)
-    {
-    $history = Sale::findOrFail($id);
-    return view('pages.sale.detail', compact('history'));
+    {    
+        $details = DetailSale::where('sale_id', $id)
+                    ->with('product')
+                    ->get();
+        
+        return view('pages.sale.detail', compact('details'));
     }
+    
+    
 }

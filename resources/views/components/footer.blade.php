@@ -1,6 +1,6 @@
 <footer class="main-footer">
     <div class="footer-left">
-@Kasir    </div>
+</div>
     <div class="footer-right">
 
     </div>
