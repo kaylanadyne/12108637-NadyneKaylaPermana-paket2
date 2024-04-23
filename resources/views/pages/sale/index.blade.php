@@ -3,12 +3,17 @@
 @section('content')
 <div class="p-2">
     <h4>Dashboard</h4>
+
 </div>
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h4>History Penjualan</h4>
+                <h4>History Penjualan</h4><br>
+                <form action="{{ route('dashboard.sales.history') }}" method="GET" class="form-inline mr-3">
+                    <input type="text" name="search" class="form-control mr-sm-2" placeholder="Cari pembeli...">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
                 <div class="card-header-form">
                     <div class="input-group">
                     </div>
@@ -33,7 +38,7 @@
                             <td>{{$history->customer->name}}</td>
                             <td>{{$history->user->name}}</td>
                             <td>
-                                <a href="{{ route('history.details', $history->id) }}" class="btn btn-primary">Detail Pembelian</a>
+                                <a href="{{ route('history.detail', $history->id) }}" class="btn btn-primary">Detail Pembelian</a>
                             </td>
                         </tr>
                         @endforeach

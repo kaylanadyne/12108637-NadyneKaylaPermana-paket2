@@ -19,7 +19,6 @@ Route::middleware(['isGuest'])->group( function() {
         route::post('/dashboard/product/editStock/{id}', 'updateStock')->name('dashboard.product.updatestock');
         route::post('/dashboard/product/delete{id}', 'deleteProduct')->name('dashboard.product.delete');
         Route::get('/history/{id}/detail', 'showDetail')->name('history.detail');
-        Route::get('/history/{id}/details', 'showDetails')->name('history.details');
 
         route::get('/dashboard/sales', 'viewSale')->name('dashboard.sales');
         route::get('/dashboard/sales/invoice', 'pdfInvoice')->name('dashboard.sales.invoice');

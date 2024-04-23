@@ -43,14 +43,14 @@ class DashboardController extends Controller
         return redirect('/dashboard/user')->with('success', 'add user success');
     }
 
-    public function deleteUser($id)
+    public function deleteUser($id) // menghapus user
     {
         $user = User::findOrFail($id);
         $user->delete();
         return back()->with('success', 'user deleted');
     }
 
-    public function updateUser(Request $request, $id)
+    public function updateUser(Request $request, $id) //mengupdate data user
     {
         $request->validate([
             "name"      => "required",
@@ -68,7 +68,7 @@ class DashboardController extends Controller
         return back()->with('success', 'user updated');
     }
 
-    public function indexProduct(Request $request) {
+    public function indexProduct(Request $request) { //menampilkan index product
         $search = $request->input('search');
         $products = Product::query()
                         ->where('name', 'LIKE', "%{$search}%")
@@ -76,7 +76,7 @@ class DashboardController extends Controller
         return view('pages.product.index', compact('products'));
     }
 
-    public function createProduct(Request $request)
+    public function createProduct(Request $request)  // create data product
     {
         $request->validate([
             "name" => "required",
@@ -113,7 +113,7 @@ class DashboardController extends Controller
         return back()->with('success', 'data product created');
     }
 
-    public function addStock(Request $request, $id) {
+    public function addStock(Request $request, $id) { //menambahkan stok barang
         $request->validate(["stock"=>"required"]);
          $stock = Product::find($id);
  
@@ -123,7 +123,7 @@ class DashboardController extends Controller
          
     }
 
-    public function updateStock(Request $request, $id){
+    public function updateStock(Request $request, $id){ //mengupdate data produk untuk nama dan harga
          $request->validate([
              "name" => "required",
              "price" => "required"
@@ -139,23 +139,23 @@ class DashboardController extends Controller
          return back()->with('success', 'data updated');
     }
 
-    public function deleteProduct($id)
+    public function deleteProduct($id) //menghapus produk
     {
         $user = Product::findOrFail($id);
         $user->delete();
         return back()->with('success', 'user deleted');
     }
 
-    public function saleHistory() {
+    public function saleHistory() { //menampilkan histori penjualan
         return view('pages.sale.index');
     }
 
-    public function viewSale() {
+    public function viewSale() { //menampilkan produk yang akan dibeli
         $products = Product::all();
         return view('pages.sale.purchasing', compact('products'));
     }
     //function confirm payment - sales
-    public function confirm(Request $request)
+    public function confirm(Request $request) //konfirmasi pembayaran
     {
         $products = [];
         $codes = $request->code;
@@ -204,7 +204,7 @@ class DashboardController extends Controller
         ]));
     }
 
-    public function pdfInvoice()
+    public function pdfInvoice() //download bukti pdf
     {
         $products = session("produk");
         $codeSearch = array_column($products, 'code');
@@ -290,27 +290,31 @@ class DashboardController extends Controller
         return redirect('/dashboard/sales')->with('success', 'transaksi berhasil');
     }
 
-    public function viewHistory() {
+    public function viewHistory(Request $request) {
+        $searchQuery = $request->input('search');
+        
         if (Auth()->user()->role === 'admin') {
-            $historys = Sale::with(['user', 'customer'])->get();
+            $historys = Sale::with(['user', 'customer'])
+                            ->whereHas('customer', function ($search) use ($searchQuery) {
+                                $search->where('name', 'like', '%' . $searchQuery . '%');
+                            })
+                            ->get();
             return view('pages.sale.index', compact('historys'));
         } else {
-        $userId = Auth()->user()->id;
+            $userId = Auth()->user()->id;
     
-        $historys = Sale::with(['customer', 'user'])
-                        ->where('user_id', $userId)
-                        ->get();
-    
-        return view('pages.sale.index', compact('historys'));
-        }
+            $historys = Sale::with(['customer', 'user'])
+                            ->where('user_id', $userId)
+                            ->whereHas('customer', function ($search) use ($searchQuery) {
+                                $search->where('name', 'like', '%' . $searchQuery . '%');
+                            })
+                            ->get();
         
+            return view('pages.sale.index', compact('historys'));
+        }
     }
-
-    public function showDetails($id)
-    {
-        $history = Sale::findOrFail($id);
-        return view('pages.sale.detail', compact('history'));
-    }
+    
+    
 
     public function showDetail($id)
     {    
